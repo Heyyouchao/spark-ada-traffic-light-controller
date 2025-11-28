@@ -1,0 +1,22 @@
+[GENERATED OBJECT FILE]
+b__main.o
+[PROJECT FILES]
+/Users/cherylchau/testalire/coursework2/main.gpr
+20251128161533 a9aeab10c42117bf83436dbae5819c02
+[BOUND OBJECT FILES]
+/Users/cherylchau/testalire/coursework2/spark.o
+/Users/cherylchau/testalire/coursework2/spark-text_io.o
+/Users/cherylchau/testalire/coursework2/spark-text_io-integer_io.o
+/Users/cherylchau/testalire/coursework2/as_io_wrapper.o
+/Users/cherylchau/testalire/coursework2/traffic_control.o
+/Users/cherylchau/testalire/coursework2/main.o
+[GENERATED SOURCE FILES]
+b__main.ads
+b__main.adb
+b__main.ali
+[RESULTING OPTIONS]
+-L/Users/cherylchau/testalire/coursework2/
+-L/Users/cherylchau/testalire/coursework2/
+-L/Users/cherylchau/.local/share/alire/toolchains/gnat_native_14.2.1_cc5517d6/lib/gcc/aarch64-apple-darwin23.6.0/14.2.0/adalib/
+-static
+/Users/cherylchau/.local/share/alire/toolchains/gnat_native_14.2.1_cc5517d6/lib/gcc/aarch64-apple-darwin23.6.0/14.2.0/adalib/libgnat.a

@@ -1,0 +1,124 @@
+V "GNAT Lib v14"
+M P W=b
+A -gnatA
+A -gnatwa
+A -mmacosx-version-min=15.0.0
+A -mcpu=apple-m1
+A -mlittle-endian
+A -mabi=lp64
+A -fPIC
+P SS ZX
+
+RN
+RV NO_LOCAL_ALLOCATORS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DYNAMIC_SIZED_OBJECTS
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U main%b		main.adb		8a7da9b9 NE OO SU
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W as_io_wrapper%s	as_io_wrapper.adb	as_io_wrapper.ali
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W traffic_control%s	traffic_control.adb	traffic_control.ali
+
+D ada.ads		20240808082856 76789da1 ada%s
+D a-charac.ads		20240808082856 2d3ec45b ada.characters%s
+D a-chahan.ads		20240808082856 bf752ff6 ada.characters.handling%s
+D a-chlat1.ads		20240808082856 e0d72e76 ada.characters.latin_1%s
+D a-except.ads		20240808082856 e7970cd9 ada.exceptions%s
+D a-ioexce.ads		20240808082856 40018c65 ada.io_exceptions%s
+D a-stream.ads		20240808082856 119b8fb3 ada.streams%s
+D a-string.ads		20240808082856 90ac6797 ada.strings%s
+D a-sttebu.ads		20240808082856 f1ad67a2 ada.strings.text_buffers%s
+D a-stuten.ads		20240808082856 c6ced0ae ada.strings.utf_encoding%s
+D a-tags.ads		20240808082856 9eaa38c6 ada.tags%s
+D a-textio.ads		20240808082856 34ef47de ada.text_io%s
+D a-unccon.ads		20240808082856 0e9b276f ada.unchecked_conversion%s
+D as_io_wrapper.ads	20251023144233 496083d0 as_io_wrapper%s
+D interfac.ads		20240808082856 9111f9c1 interfaces%s
+D i-cstrea.ads		20240808082856 ffd01b9d interfaces.c_streams%s
+D main.adb		20251128190301 c087770c main%b
+D spark.ads		20251023144233 16439e1d spark%s
+D spark-text_io.ads	20251023144233 6c63416e spark.text_io%s
+D system.ads		20240808082856 70765b54 system%s
+D s-conca2.ads		20240808082856 b5fb73f7 system.concat_2%s
+D s-crtl.ads		20240808082856 beb39b9e system.crtl%s
+D s-exctab.ads		20240808082856 91bef6ef system.exception_table%s
+D s-ficobl.ads		20240808082856 dc5161d4 system.file_control_block%s
+D s-parame.ads		20240808082856 3597fc11 system.parameters%s
+D s-putima.ads		20240808082856 17291fe4 system.put_images%s
+D s-secsta.ads		20240808082856 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240808082856 df77073e system.soft_links%s
+D s-stache.ads		20240808082856 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20240808082856 1c9580f6 system.standard_library%s
+D s-stoele.ads		20240808082856 ccded4e8 system.storage_elements%s
+D s-traent.ads		20240808082856 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240808082856 fa2a7f59 system.unsigned_types%s
+D s-wchcon.ads		20240808082856 d9032363 system.wch_con%s
+D traffic_control.ads	20251128184915 bcef7293 traffic_control%s
+G a e
+G c Z b b [main standard 7 11 none]
+G r c none [main standard 7 11 none] [as_init_standard_output as_io_wrapper 33 14 none]
+G r c none [main standard 7 11 none] [as_init_standard_input as_io_wrapper 26 14 none]
+G r c none [main standard 7 11 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [main standard 7 11 none] [to_string traffic_control 13 13 none]
+G r c none [main standard 7 11 none] [as_get_line as_io_wrapper 83 14 none]
+G r c none [main standard 7 11 none] [next_state traffic_control 23 14 none]
+X 1 ada.ads
+16K9*Ada 20e8 17|4r6 4r35
+X 2 a-charac.ads
+16K13*Characters 18e19 17|4r10 4r39
+X 3 a-chahan.ads
+43K24*Handling 454e28 17|4w21 4r50
+224V13*To_Upper{character} 17|30s27 48s20 50s16 56s20 58s16 64s20 66s15
+X 14 as_io_wrapper.ads
+22K9*AS_Io_Wrapper 139e18 17|3w6 3r35
+26U14*AS_Init_Standard_Input 17|85s4
+33U14*AS_Init_Standard_Output 17|84s4
+83U14*AS_Get_Line 17|28s7 47s10 55s10 63s10
+91U14*AS_Put_Line 17|15s7 16s7 17s7 18s7 19s7 27s7 46s10 54s10 62s10 109s13
+X 17 main.adb
+7U11*Main 7b11 139l5 139t9
+13U14 Show_State 13b14 13>26 20l8 20t18 102s10
+13r26 S{35|7R9} 16r49 17r49 18r49
+23U14 Ask_Exit 23b14 23<24 35l8 35t16 107s10
+23b24 Stop{boolean} 31m10 33m10
+24a7 Line{string} 28m20 30r36
+25i7 Len{natural} 28m26 30r10
+38U14 Get_Sensors 38b14 39<7 39<13 39<19 67l8 67t19 116s10
+39b7 CarM{boolean} 50m7
+39b13 CarS{boolean} 58m7
+39b19 Ped{boolean} 66m7
+41a7 Input{string} 47m23 48r29 50r25 55m23 56r29 58r25 63m23 64r29 66r24
+42i7 Input_Len{natural} 47m30 55m30 63m30
+74b4 Car_Main{boolean} 116m22 123r30
+75b4 Car_Side{boolean} 116m32 124r30
+76b4 Ped_Request{boolean} 116m42 125r30
+78b4 Ped_Locked{boolean} 126r30 134m10
+80r4 Current{35|7R9} 88m4 102r21 122r30 133m10
+80r13 Next{35|7R9} 127m30 133r24
+81b4 Next_Ped_Lock{boolean} 128m30 134r24
+97b10 Stop{boolean} 107m19 108r13
+X 35 traffic_control.ads
+3K9*Traffic_Control 17|5w6 5r35 35|39e20
+5n25*Red{5E9} 17|89r30 90r30
+5n37*Green{5E9} 17|88r30
+7R9*Junction_State 17|13r30 80r20 35|11e14
+8e7*Main_Road{5E9} 17|16r51 88m16
+9e7*Side_Road{5E9} 17|17r51 89m16
+10e7*Pedestrian{5E9} 17|18r51 90m16
+13V13*To_String{string} 17|16s39 17s39 18s39
+23U14*Next_State 17|121s10
+24r7 Current{7R9} 17|122r13
+25b7 Car_Main{boolean} 17|123r13
+26b7 Car_Side{boolean} 17|124r13
+27b7 Ped_Request{boolean} 17|125r13
+28b7 Ped_Locked{boolean} 17|126r13
+29r7 Next{7R9} 17|127r13
+30b7 Next_Ped_Lock{boolean} 17|128r13
+

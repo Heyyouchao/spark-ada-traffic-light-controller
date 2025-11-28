@@ -1,0 +1,12 @@
+name = "main"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["Cheryl Chau"]
+maintainers = ["Cheryl Chau <chauheiyu124@gmail.com>"]
+maintainers-logins = ["Heyyouchao"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["main"]

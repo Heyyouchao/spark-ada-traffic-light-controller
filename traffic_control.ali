@@ -1,0 +1,64 @@
+V "GNAT Lib v14"
+A -gnatA
+A -gnatwa
+A -mmacosx-version-min=15.0.0
+A -mcpu=apple-m1
+A -mlittle-endian
+A -mabi=lp64
+A -fPIC
+P SS ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_IMPLEMENTATION_ASPECT_SPECIFICATIONS
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U traffic_control%b	traffic_control.adb	7b95234c NE OO PK
+Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U traffic_control%s	traffic_control.ads	bcef7293 EE NE OO PK
+
+D system.ads		20240808082856 70765b54 system%s
+D s-parame.ads		20240808082856 3597fc11 system.parameters%s
+D s-secsta.ads		20240808082856 578279f5 system.secondary_stack%s
+D s-stoele.ads		20240808082856 ccded4e8 system.storage_elements%s
+D traffic_control.ads	20251128184915 bcef7293 traffic_control%s
+D traffic_control.adb	20251128184125 c77a51df traffic_control%b
+G a e
+G c Z s b [to_string traffic_control 13 13 none]
+G c Z s b [safe traffic_control 18 13 none]
+G c Z s b [next_state traffic_control 23 14 none]
+G c Z s s [junction_stateIP traffic_control 7 9 none]
+G c Z b b [main_g traffic_control 32 13 none]
+G c Z b b [side_g traffic_control 39 13 none]
+G c Z b b [ped_g traffic_control 46 13 none]
+X 5 traffic_control.ads
+3K9*Traffic_Control 39l5 39e20 6|3b14 107l5 107t20
+5E9*Light_Color 5e43 8r20 9r20 10r20 13r28 6|5r28
+5n25*Red{5E9} 6|8r15 21r32 21r54 35r29 36r29 41r29 43r29 48r29 49r29
+5n30*Amber{5E9} 6|9r15
+5n37*Green{5E9} 6|10r15 16r24 16r48 20r25 34r29 42r29 50r29
+7R9*Junction_State 11e14 18r23 24r30 29r30 6|14r23 32r27 39r27 46r26 54r30
+. 59r30
+8e7*Main_Road{5E9} 6|16r12 21r20 34m15 41m15 48m15
+9e7*Side_Road{5E9} 6|16r36 21r42 35m15 42m15 49m15
+10e7*Pedestrian{5E9} 6|20r12 36m15 43m15 50m15
+13V13*To_String{string} 13>24 16r20 6|5b13 12l8 12t17
+13e24 C{5E9} 16r40 6|5b24 7r12
+18V13*Safe{boolean} 18>19 21r20 36s14 37s14 6|14b13 27l8 27t12
+18r19 S{7R9} 21r35 6|14b19 16r10 16r34 20r10 21r18 21r40
+23U14*Next_State 24>7 25>7 26>7 27>7 28>7 29<7 30<7 6|53b14 105l8 105t18
+24r7 Current{7R9} 34r27 35r27 36r19 6|54b7 71r10 78r10 91r10
+25b7 Car_Main{boolean} 34r36 35r36 6|55b7
+26b7 Car_Side{boolean} 34r46 35r46 6|56b7 79r13
+27b7 Ped_Request{boolean} 34r56 35r56 6|57b7 64r10
+28b7 Ped_Locked{boolean} 34r69 35r69 6|58b7 64r30 86r27 103r24
+29r7 Next{7R9} 34r9 37r19 6|59b7 65m10 72m10 80m13 82m13 92m10 102m7
+30b7 Next_Ped_Lock{boolean} 35r9 6|60b7 66m10 73m10 86m10 96m10 103m7
+X 6 traffic_control.adb
+32V13 Main_G{5|7R9} 32b13 37l8 37t14 72s18 78s20 82s21 92s18 102s15
+39V13 Side_G{5|7R9} 39b13 44l8 44t14 80s21 91s20
+46V13 Ped_G{5|7R9} 46b13 51l8 51t13 65s18 71s20
+
