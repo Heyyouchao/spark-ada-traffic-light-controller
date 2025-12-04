@@ -1,160 +1,148 @@
 pragma SPARK_Mode (On);
 
-with AS_IO_Wrapper;             use AS_IO_Wrapper;
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with AS_IO_Wrapper; use AS_IO_Wrapper;
 
 package body Traffic_Control is
 
-   ---------------------------------------------------------
-   -- PRINT A FULL STATE BLOCK
-   ---------------------------------------------------------
-   procedure Show_State (S : Junction_State) is
+   ------------------------------------------------
+   -- INITIAL STATE
+   ------------------------------------------------
+   procedure Init is
    begin
-      AS_Put_Line ("==== Traffic Controller ====");
-      AS_Put_Line ("Main Road   : " & Light_Color'Image(S.Main_Road));
-      AS_Put_Line ("Side Road   : " & Light_Color'Image(S.Side_Road));
-      AS_Put_Line ("Pedestrian  : " & Light_Color'Image(S.Pedestrian));
-      AS_Put_Line ("");
-   end Show_State;
+      Status := (Main_Road  => Red,
+                 Side_Road  => Red,
+                 Pedestrian => Red);
+   end Init;
 
-
-   ---------------------------------------------------------
-   -- GET SENSOR INPUTS (Y/N)
-   ---------------------------------------------------------
-   procedure Read_Sensors
-     (Car_Main  : out Boolean;
-      Car_Side  : out Boolean;
-      Ped_Press : out Boolean)
+   ------------------------------------------------
+   -- SHARED HELPER: PRINT + WAIT
+   ------------------------------------------------
+   procedure Show_And_Wait
+     (M, S, P : Light_Color;
+      Message : String)
    is
-      Buf : String (1 .. 10);
+      Buf : String (1 .. 5);
       Len : Natural;
    begin
-      -- MAIN CAR SENSOR
-      loop
-         AS_Put_Line ("Car on MAIN road? (Y/N): ");
-         AS_Get_Line (Buf, Len);
-         exit when To_Upper (Buf(1)) in 'Y' | 'N';
-      end loop;
-      Car_Main := (To_Upper (Buf(1)) = 'Y');
+      Status := (M, S, P);
 
-      -- SIDE CAR SENSOR
-      loop
-         AS_Put_Line ("Car on SIDE road? (Y/N): ");
-         AS_Get_Line (Buf, Len);
-         exit when To_Upper (Buf(1)) in 'Y' | 'N';
-      end loop;
-      Car_Side := (To_Upper (Buf(1)) = 'Y');
+      AS_Put_Line("==== Traffic Controller ====");
+      AS_Put_Line("Main: " & Light_Color'Image(M));
+      AS_Put_Line("Side: " & Light_Color'Image(S));
+      AS_Put_Line("Ped : " & Light_Color'Image(P));
+      AS_Put_Line(Message);
+      AS_Get_Line(Buf, Len);
+   end Show_And_Wait;
 
-      -- PEDESTRIAN BUTTON
+   ------------------------------------------------
+   -- SENSOR INPUT
+   ------------------------------------------------
+   procedure Read_Sensors
+     (Car_Main : out Boolean;
+      Car_Side : out Boolean;
+      Ped      : out Boolean)
+   is
+      S   : String (1 .. 10);
+      L   : Natural;
+   begin
+      -- MAIN
       loop
-         AS_Put_Line ("Pedestrian pressed? (Y/N): ");
-         AS_Get_Line (Buf, Len);
-         exit when To_Upper (Buf(1)) in 'Y' | 'N';
+         AS_Put_Line("Car on MAIN road? (Y/N): ");
+         AS_Get_Line(S, L);
+         exit when S(1) in 'Y' | 'y' | 'N' | 'n';
       end loop;
-      Ped_Press := (To_Upper (Buf(1)) = 'Y');
+      Car_Main := (S(1) in 'Y' | 'y');
+
+      -- SIDE
+      loop
+         AS_Put_Line("Car on SIDE road? (Y/N): ");
+         AS_Get_Line(S, L);
+         exit when S(1) in 'Y' | 'y' | 'N' | 'n';
+      end loop;
+      Car_Side := (S(1) in 'Y' | 'y');
+
+      -- PEDESTRIAN
+      loop
+         AS_Put_Line("Pedestrian pressed? (Y/N): ");
+         AS_Get_Line(S, L);
+         exit when S(1) in 'Y' | 'y' | 'N' | 'n';
+      end loop;
+      Ped := (S(1) in 'Y' | 'y');
    end Read_Sensors;
 
-
-   ---------------------------------------------------------
-   -- PEDESTRIAN CYCLE: Red → Green → Red
-   -- (Main and Side stay Red while pedestrians cross)
-   ---------------------------------------------------------
+   ------------------------------------------------
+   -- PEDESTRIAN CYCLE
+   ------------------------------------------------
    procedure Pedestrian_Cycle is
-      State : Junction_State :=
-        (Main_Road  => Red,
-         Side_Road  => Red,
-         Pedestrian => Red);
-
-      Buf : String (1 .. 10);
-      Len : Natural;
    begin
-      -- Ped GREEN
-      State.Pedestrian := Green;
-      Show_State (State);
-      AS_Put_Line ("Pedestrians may cross. Press ENTER to finish crossing...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Red, Green,
+         "Pedestrian crossing active. Press ENTER...");
 
-      -- Ped RED
-      State.Pedestrian := Red;
-      Show_State (State);
-      AS_Put_Line ("Pedestrian phase complete. Press ENTER to continue...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Red, Red,
+         "Pedestrian phase complete. Press ENTER...");
    end Pedestrian_Cycle;
 
-
-   ---------------------------------------------------------
-   -- MAIN ROAD CYCLE: Amber → Green → Amber → Red
-   ---------------------------------------------------------
+   ------------------------------------------------
+   -- MAIN ROAD CYCLE
+   ------------------------------------------------
    procedure Main_Cycle is
-      State : Junction_State :=
-        (Main_Road  => Red,
-         Side_Road  => Red,
-         Pedestrian => Red);
-
-      Buf : String (1 .. 10);
-      Len : Natural;
    begin
-      -- MAIN AMBER (preparing)
-      State.Main_Road := Amber;
-      Show_State (State);
-      AS_Put_Line ("Main road AMBER (prepare). Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Amber, Red, Red,
+         "Main preparing. Press ENTER...");
 
-      -- MAIN GREEN
-      State.Main_Road := Green;
-      Show_State (State);
-      AS_Put_Line ("Main road GREEN. Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Green, Red, Red,
+         "Main traffic flowing. Press ENTER...");
 
-      -- MAIN AMBER (leaving)
-      State.Main_Road := Amber;
-      Show_State (State);
-      AS_Put_Line ("Main road AMBER (leaving). Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Amber, Red, Red,
+         "Main changing. Press ENTER...");
 
-      -- MAIN RED
-      State.Main_Road := Red;
-      Show_State (State);
-      AS_Put_Line ("Main road now RED. Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Red, Red,
+         "Main stopped. Press ENTER...");
    end Main_Cycle;
 
-
-   ---------------------------------------------------------
-   -- SIDE ROAD CYCLE: Amber → Green → Amber → Red
-   ---------------------------------------------------------
+   ------------------------------------------------
+   -- SIDE ROAD CYCLE
+   ------------------------------------------------
    procedure Side_Cycle is
-      State : Junction_State :=
-        (Main_Road  => Red,
-         Side_Road  => Red,
-         Pedestrian => Red);
-
-      Buf : String (1 .. 10);
-      Len : Natural;
    begin
-      -- SIDE AMBER (preparing)
-      State.Side_Road := Amber;
-      Show_State (State);
-      AS_Put_Line ("Side road AMBER (prepare). Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Amber, Red,
+         "Side preparing. Press ENTER...");
 
-      -- SIDE GREEN
-      State.Side_Road := Green;
-      Show_State (State);
-      AS_Put_Line ("Side road GREEN. Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Green, Red,
+         "Side traffic flowing. Press ENTER...");
 
-      -- SIDE AMBER (leaving)
-      State.Side_Road := Amber;
-      Show_State (State);
-      AS_Put_Line ("Side road AMBER (leaving). Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Amber, Red,
+         "Side changing. Press ENTER...");
 
-      -- SIDE RED
-      State.Side_Road := Red;
-      Show_State (State);
-      AS_Put_Line ("Side road now RED. Press ENTER...");
-      AS_Get_Line (Buf, Len);
+      Show_And_Wait(Red, Red, Red,
+         "Side stopped. Press ENTER...");
    end Side_Cycle;
+
+   ------------------------------------------------
+   -- MASTER CYCLE
+   ------------------------------------------------
+   procedure Run_Traffic_Cycle
+     (Ped      : in Boolean;
+      Car_Main : in Boolean;
+      Car_Side : in Boolean)
+   is
+   begin
+      if Ped then
+         Pedestrian_Cycle;
+      end if;
+
+      if Car_Main then
+         Main_Cycle;
+      end if;
+
+      if Car_Side then
+         Side_Cycle;
+      end if;
+
+      if (not Ped) and (not Car_Main) and (not Car_Side) then
+         AS_Put_Line("No traffic detected. All lights remain RED.");
+         AS_Put_Line("");
+      end if;
+   end Run_Traffic_Cycle;
 
 end Traffic_Control;
