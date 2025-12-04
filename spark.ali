@@ -1,6 +1,5 @@
 V "GNAT Lib v14"
 A -gnatA
-A -gnatwa
 A -mmacosx-version-min=15.0.0
 A -mcpu=apple-m1
 A -mlittle-endian

@@ -1,64 +1,124 @@
 V "GNAT Lib v14"
 A -gnatA
-A -gnatwa
 A -mmacosx-version-min=15.0.0
 A -mcpu=apple-m1
 A -mlittle-endian
 A -mabi=lp64
 A -fPIC
-P SS ZX
+P ZX
 
 RN
-RV NO_DIRECT_BOOLEAN_OPERATORS
-RV NO_SECONDARY_STACK
-RV NO_STANDARD_STORAGE_POOLS
+RV NO_ENUMERATION_MAPS
+RV NO_DYNAMIC_SIZED_OBJECTS
 RV NO_IMPLEMENTATION_ASPECT_SPECIFICATIONS
 RV NO_IMPLEMENTATION_PRAGMAS
 
-U traffic_control%b	traffic_control.adb	7b95234c NE OO PK
-Z system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+U traffic_control%b	traffic_control.adb	4ba6ac3d NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
+W as_io_wrapper%s	as_io_wrapper.adb	as_io_wrapper.ali
+Z system.concat_2%s	s-conca2.adb		s-conca2.ali
 
-U traffic_control%s	traffic_control.ads	bcef7293 EE NE OO PK
+U traffic_control%s	traffic_control.ads	663bcd35 EE NE OO PK
+Z ada.strings.text_buffers%s  a-sttebu.adb	a-sttebu.ali
 
+D ada.ads		20240808082856 76789da1 ada%s
+D a-charac.ads		20240808082856 2d3ec45b ada.characters%s
+D a-chahan.ads		20240808082856 bf752ff6 ada.characters.handling%s
+D a-chlat1.ads		20240808082856 e0d72e76 ada.characters.latin_1%s
+D a-except.ads		20240808082856 e7970cd9 ada.exceptions%s
+D a-ioexce.ads		20240808082856 40018c65 ada.io_exceptions%s
+D a-stream.ads		20240808082856 119b8fb3 ada.streams%s
+D a-string.ads		20240808082856 90ac6797 ada.strings%s
+D a-sttebu.ads		20240808082856 f1ad67a2 ada.strings.text_buffers%s
+D a-stuten.ads		20240808082856 c6ced0ae ada.strings.utf_encoding%s
+D a-tags.ads		20240808082856 9eaa38c6 ada.tags%s
+D a-textio.ads		20240808082856 34ef47de ada.text_io%s
+D a-unccon.ads		20240808082856 0e9b276f ada.unchecked_conversion%s
+D as_io_wrapper.ads	20251023144233 496083d0 as_io_wrapper%s
+D interfac.ads		20240808082856 9111f9c1 interfaces%s
+D i-cstrea.ads		20240808082856 ffd01b9d interfaces.c_streams%s
+D spark.ads		20251023144233 16439e1d spark%s
+D spark-text_io.ads	20251023144233 6c63416e spark.text_io%s
 D system.ads		20240808082856 70765b54 system%s
+D s-conca2.ads		20240808082856 b5fb73f7 system.concat_2%s
+D s-crtl.ads		20240808082856 beb39b9e system.crtl%s
+D s-exctab.ads		20240808082856 91bef6ef system.exception_table%s
+D s-ficobl.ads		20240808082856 dc5161d4 system.file_control_block%s
 D s-parame.ads		20240808082856 3597fc11 system.parameters%s
+D s-putima.ads		20240808082856 17291fe4 system.put_images%s
 D s-secsta.ads		20240808082856 578279f5 system.secondary_stack%s
+D s-soflin.ads		20240808082856 df77073e system.soft_links%s
+D s-stache.ads		20240808082856 0b81c1fe system.stack_checking%s
+D s-stalib.ads		20240808082856 1c9580f6 system.standard_library%s
 D s-stoele.ads		20240808082856 ccded4e8 system.storage_elements%s
-D traffic_control.ads	20251128184915 bcef7293 traffic_control%s
-D traffic_control.adb	20251128184125 c77a51df traffic_control%b
+D s-traent.ads		20240808082856 c81cbf8c system.traceback_entries%s
+D s-unstyp.ads		20240808082856 fa2a7f59 system.unsigned_types%s
+D s-wchcon.ads		20240808082856 d9032363 system.wch_con%s
+D traffic_control.ads	20251204154421 663bcd35 traffic_control%s
+D traffic_control.adb	20251204154639 db88cd2e traffic_control%b
 G a e
-G c Z s b [to_string traffic_control 13 13 none]
-G c Z s b [safe traffic_control 18 13 none]
-G c Z s b [next_state traffic_control 23 14 none]
-G c Z s s [junction_stateIP traffic_control 7 9 none]
-G c Z b b [main_g traffic_control 32 13 none]
-G c Z b b [side_g traffic_control 39 13 none]
-G c Z b b [ped_g traffic_control 46 13 none]
-X 5 traffic_control.ads
-3K9*Traffic_Control 39l5 39e20 6|3b14 107l5 107t20
-5E9*Light_Color 5e43 8r20 9r20 10r20 13r28 6|5r28
-5n25*Red{5E9} 6|8r15 21r32 21r54 35r29 36r29 41r29 43r29 48r29 49r29
-5n30*Amber{5E9} 6|9r15
-5n37*Green{5E9} 6|10r15 16r24 16r48 20r25 34r29 42r29 50r29
-7R9*Junction_State 11e14 18r23 24r30 29r30 6|14r23 32r27 39r27 46r26 54r30
-. 59r30
-8e7*Main_Road{5E9} 6|16r12 21r20 34m15 41m15 48m15
-9e7*Side_Road{5E9} 6|16r36 21r42 35m15 42m15 49m15
-10e7*Pedestrian{5E9} 6|20r12 36m15 43m15 50m15
-13V13*To_String{string} 13>24 16r20 6|5b13 12l8 12t17
-13e24 C{5E9} 16r40 6|5b24 7r12
-18V13*Safe{boolean} 18>19 21r20 36s14 37s14 6|14b13 27l8 27t12
-18r19 S{7R9} 21r35 6|14b19 16r10 16r34 20r10 21r18 21r40
-23U14*Next_State 24>7 25>7 26>7 27>7 28>7 29<7 30<7 6|53b14 105l8 105t18
-24r7 Current{7R9} 34r27 35r27 36r19 6|54b7 71r10 78r10 91r10
-25b7 Car_Main{boolean} 34r36 35r36 6|55b7
-26b7 Car_Side{boolean} 34r46 35r46 6|56b7 79r13
-27b7 Ped_Request{boolean} 34r56 35r56 6|57b7 64r10
-28b7 Ped_Locked{boolean} 34r69 35r69 6|58b7 64r30 86r27 103r24
-29r7 Next{7R9} 34r9 37r19 6|59b7 65m10 72m10 80m13 82m13 92m10 102m7
-30b7 Next_Ped_Lock{boolean} 35r9 6|60b7 66m10 73m10 86m10 96m10 103m7
-X 6 traffic_control.adb
-32V13 Main_G{5|7R9} 32b13 37l8 37t14 72s18 78s20 82s21 92s18 102s15
-39V13 Side_G{5|7R9} 39b13 44l8 44t14 80s21 91s20
-46V13 Ped_G{5|7R9} 46b13 51l8 51t13 65s18 71s20
+G c Z s b [show_state traffic_control 12 14 none]
+G c Z s b [read_sensors traffic_control 15 14 none]
+G c Z s b [pedestrian_cycle traffic_control 23 14 none]
+G c Z s b [main_cycle traffic_control 26 14 none]
+G c Z s b [side_cycle traffic_control 29 14 none]
+G c Z s s [junction_stateIP traffic_control 6 9 none]
+G r c none [show_state traffic_control 12 14 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [read_sensors traffic_control 15 14 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [read_sensors traffic_control 15 14 none] [as_get_line as_io_wrapper 83 14 none]
+G r c none [pedestrian_cycle traffic_control 23 14 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [pedestrian_cycle traffic_control 23 14 none] [as_get_line as_io_wrapper 83 14 none]
+G r c none [main_cycle traffic_control 26 14 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [main_cycle traffic_control 26 14 none] [as_get_line as_io_wrapper 83 14 none]
+G r c none [side_cycle traffic_control 29 14 none] [as_put_line as_io_wrapper 91 14 none]
+G r c none [side_cycle traffic_control 29 14 none] [as_get_line as_io_wrapper 83 14 none]
+X 1 ada.ads
+16K9*Ada 20e8 35|4r6 4r37
+X 2 a-charac.ads
+16K13*Characters 18e19 35|4r10 4r41
+X 3 a-chahan.ads
+43K24*Handling 454e28 35|4w21 4r52
+224V13*To_Upper{character} 35|36s20 38s20 44s20 46s20 52s20 54s21
+X 14 as_io_wrapper.ads
+22K9*AS_Io_Wrapper 139e18 35|3w6 3r37
+83U14*AS_Get_Line 35|35s10 43s10 51s10 75s7 81s7 101s7 107s7 113s7 119s7
+. 139s7 145s7 151s7 157s7
+91U14*AS_Put_Line 35|13s7 14s7 15s7 16s7 17s7 34s10 42s10 50s10 74s7 80s7
+. 100s7 106s7 112s7 118s7 138s7 144s7 150s7 156s7
+X 34 traffic_control.ads
+3K9*Traffic_Control 32l5 32e20 35|6b14 160l5 160t20
+4E9*Light_Color 4e43 7r20 8r20 9r20 35|14r39 15r39 16r39
+4n25*Red{4E9} 35|64r24 65r24 66r24 78r27 90r24 91r24 92r24 116r26 128r24
+. 129r24 130r24 154r26
+4n30*Amber{4E9} 35|98r26 110r26 136r26 148r26
+4n37*Green{4E9} 35|72r27 104r26 142r26
+6R9*Junction_State 10e14 12r30 35|11r30 63r15 89r15 127r15
+7e7*Main_Road{4E9} 35|14r59 64m10 90m10 98m13 104m13 110m13 116m13 128m10
+8e7*Side_Road{4E9} 35|15r59 65m10 91m10 129m10 136m13 142m13 148m13 154m13
+9e7*Pedestrian{4E9} 35|16r59 66m10 72m13 78m13 92m10 130m10
+12U14*Show_State 12>26 35|11b14 18l8 18t18 73s7 79s7 99s7 105s7 111s7 117s7
+. 137s7 143s7 149s7 155s7
+12r26 S{6R9} 35|11b26 14r57 15r57 16r57
+15U14*Read_Sensors 16<7 17<7 18<7 35|24b14 55l8 55t20
+16b7 Car_Main{boolean} 21r21 35|25b7 38m7
+17b7 Car_Side{boolean} 21r31 35|26b7 46m7
+18b7 Ped_Press{boolean} 21r41 35|27b7 54m7
+23U14*Pedestrian_Cycle 35|62b14 82l8 82t24
+26U14*Main_Cycle 35|88b14 120l8 120t18
+29U14*Side_Cycle 35|126b14 158l8 158t18
+X 35 traffic_control.adb
+29a7 Buf{string} 35m23 36r30 38r30 43m23 44r30 46r30 51m23 52r30 54r31
+30i7 Len{natural} 35m28 43m28 51m28
+63r7 State{34|6R9} 72m7 73r19 78m7 79r19
+68a7 Buf{string} 75m20 81m20
+69i7 Len{natural} 75m25 81m25
+89r7 State{34|6R9} 98m7 99r19 104m7 105r19 110m7 111r19 116m7 117r19
+94a7 Buf{string} 101m20 107m20 113m20 119m20
+95i7 Len{natural} 101m25 107m25 113m25 119m25
+127r7 State{34|6R9} 136m7 137r19 142m7 143r19 148m7 149r19 154m7 155r19
+132a7 Buf{string} 139m20 145m20 151m20 157m20
+133i7 Len{natural} 139m25 145m25 151m25 157m25
 

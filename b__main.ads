@@ -40,7 +40,7 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#8a7da9b9#;
+   u00001 : constant Version_32 := 16#efebf116#;
    pragma Export (C, u00001, "mainB");
    u00002 : constant Version_32 := 16#30305195#;
    pragma Export (C, u00002, "system__standard_libraryB");
@@ -310,14 +310,14 @@ package ada_main is
    pragma Export (C, u00134, "system__val_llliS");
    u00135 : constant Version_32 := 16#7a141c22#;
    pragma Export (C, u00135, "system__val_llluS");
-   u00136 : constant Version_32 := 16#ca878138#;
-   pragma Export (C, u00136, "system__concat_2B");
-   u00137 : constant Version_32 := 16#c58d28a3#;
-   pragma Export (C, u00137, "system__concat_2S");
-   u00138 : constant Version_32 := 16#7b95234c#;
-   pragma Export (C, u00138, "traffic_controlB");
-   u00139 : constant Version_32 := 16#bcef7293#;
-   pragma Export (C, u00139, "traffic_controlS");
+   u00136 : constant Version_32 := 16#4ba6ac3d#;
+   pragma Export (C, u00136, "traffic_controlB");
+   u00137 : constant Version_32 := 16#663bcd35#;
+   pragma Export (C, u00137, "traffic_controlS");
+   u00138 : constant Version_32 := 16#ca878138#;
+   pragma Export (C, u00138, "system__concat_2B");
+   u00139 : constant Version_32 := 16#c58d28a3#;
+   pragma Export (C, u00139, "system__concat_2S");
    u00140 : constant Version_32 := 16#8f2423cb#;
    pragma Export (C, u00140, "system__memoryB");
    u00141 : constant Version_32 := 16#68e2c74e#;

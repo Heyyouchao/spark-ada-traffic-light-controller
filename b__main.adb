@@ -31,7 +31,7 @@ package body ada_main is
    E120 : Short_Integer; pragma Import (Ada, E120, "spark__text_io_E");
    E122 : Short_Integer; pragma Import (Ada, E122, "spark__text_io__integer_io_E");
    E086 : Short_Integer; pragma Import (Ada, E086, "as_io_wrapper_E");
-   E139 : Short_Integer; pragma Import (Ada, E139, "traffic_control_E");
+   E137 : Short_Integer; pragma Import (Ada, E137, "traffic_control_E");
 
    Sec_Default_Sized_Stacks : array (1 .. 1) of aliased System.Secondary_Stack.SS_Stack (System.Parameters.Runtime_Default_Sec_Stack_Size);
 
@@ -206,7 +206,7 @@ package body ada_main is
       E120 := E120 + 1;
       E122 := E122 + 1;
       E086 := E086 + 1;
-      E139 := E139 + 1;
+      E137 := E137 + 1;
    end adainit;
 
    procedure Ada_Main_Program;
