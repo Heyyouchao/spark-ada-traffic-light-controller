@@ -1,7 +1,5 @@
 pragma SPARK_Mode (On);
 
-with AS_IO_Wrapper;
-
 package Traffic_Control is
 
    type Light_Color is (Red, Amber, Green);
@@ -14,29 +12,67 @@ package Traffic_Control is
 
    Status : Junction_State;
 
-   -- Initialise to safe ALL-RED state
+   ----------------------------------------------------
+   -- INITIALISATION
+   ----------------------------------------------------
    procedure Init
-     with Depends => (Status => null);
+     with
+       Global  => (Output => Status),
+       Depends => (Status => null),
+       Post =>
+         Status.Main_Road  = Red and
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red;
 
-   -- Read sensors (I/O is not checked by SPARK)
-   procedure Read_Sensors
-     (Car_Main : out Boolean;
-      Car_Side : out Boolean;
-      Ped      : out Boolean);
+   ----------------------------------------------------
+   -- PEDESTRIAN CYCLE LOGIC
+   ----------------------------------------------------
+   procedure Apply_Pedestrian_Cycle
+     with
+       Global  => (Output => Status),
+       Depends => (Status => null),
+       Post =>
+         Status.Main_Road  = Red and
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red;
 
-   -- Cycles
-   procedure Pedestrian_Cycle;
+   ----------------------------------------------------
+   -- MAIN ROAD CYCLE LOGIC
+   ----------------------------------------------------
+   procedure Apply_Main_Cycle
+     with
+       Global  => (In_Out => Status),
+       Depends => (Status => Status),
+       Post =>
+         Status.Main_Road = Red;
 
-   procedure Main_Cycle;
+   ----------------------------------------------------
+   -- SIDE ROAD CYCLE LOGIC
+   ----------------------------------------------------
+   procedure Apply_Side_Cycle
+     with
+       Global  => (In_Out => Status),
+       Depends => (Status => Status),
+       Post =>
+         Status.Side_Road = Red and
+         Status.Main_Road = Red;
 
-   procedure Side_Cycle;
-
-   -- Master cycle
+   ----------------------------------------------------
+   -- MASTER LOGIC (ABSTRACT SAFETY)
+   ----------------------------------------------------
    procedure Run_Traffic_Cycle
      (Ped      : in Boolean;
       Car_Main : in Boolean;
       Car_Side : in Boolean)
-     with Depends =>
-       (Status => (Status, Ped, Car_Main, Car_Side));
+     with
+       Global  => (In_Out => Status),
+       Depends => (Status => (Status, Ped, Car_Main, Car_Side)),
+       Pre =>
+         -- Arbitrary but non-contradictory example:
+         not (Ped and Car_Main and Car_Side),
+       Post =>
+         (Status.Main_Road  in Light_Color) and
+         (Status.Side_Road  in Light_Color) and
+         (Status.Pedestrian in Light_Color);
 
 end Traffic_Control;
