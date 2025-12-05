@@ -1,4 +1,4 @@
-pragma SPARK_Mode (Off);
+pragma SPARK_Mode;
 
 with AS_IO_Wrapper; use AS_IO_Wrapper;
 with Traffic_Control; use Traffic_Control;
@@ -28,6 +28,8 @@ begin
    AS_Init_Standard_Input;
    
    init;
+   AS_Put_Line ("System starting in ALL-RED safe state...");
+   AS_Put_Line ("");
 
    loop
       --------------------------------------------------
@@ -68,10 +70,10 @@ begin
       -- PEDESTRIAN SEQUENCE
       --------------------------------------------------
       if Ped_Request then
-         Status := (Red, Red, Green);
+         Step_Ped_Start;
          Show_Step("Pedestrian crossing active. Press ENTER...");
 
-         Status := (Red, Red, Red);
+         Step_Ped_End;
          Show_Step("Pedestrian phase complete. Press ENTER...");
       end if;
 
@@ -79,16 +81,16 @@ begin
       -- MAIN ROAD SEQUENCE
       --------------------------------------------------
       if Car_Main then
-         Status := (Amber, Red, Red);
+         Step_Main_Prepare;
          Show_Step("Main preparing. Press ENTER...");
 
-         Status.Main_Road := Green;
+         Step_Main_Green;
          Show_Step("Main traffic flowing. Press ENTER...");
 
-         Status.Main_Road := Amber;
+         Step_Main_Amber;
          Show_Step("Main changing. Press ENTER...");
 
-         Status.Main_Road := Red;
+         Step_Main_Red;
          Show_Step("Main stopped. Press ENTER...");
       end if;
 
@@ -96,16 +98,16 @@ begin
       -- SIDE ROAD SEQUENCE
       --------------------------------------------------
       if Car_Side then
-         Status := (Red, Amber, Red);
+         Step_Side_Prepare;
          Show_Step("Side preparing. Press ENTER...");
 
-         Status.Side_Road := Green;
+         Step_Side_Green;
          Show_Step("Side traffic flowing. Press ENTER...");
 
-         Status.Side_Road := Amber;
+         Step_Side_Amber;
          Show_Step("Side changing. Press ENTER...");
 
-         Status.Side_Road := Red;
+         Step_Side_Red;
          Show_Step("Side stopped. Press ENTER...");
       end if;
 
@@ -113,6 +115,7 @@ begin
       -- NO TRAFFIC
       --------------------------------------------------
       if (not Ped_Request) and (not Car_Main) and (not Car_Side) then
+         Step_All_Red;
          AS_Put_Line("No traffic detected. All lights remain RED.");
       end if;
 

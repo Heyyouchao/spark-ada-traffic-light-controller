@@ -7,21 +7,61 @@ package body Traffic_Control is
       Status := (Red, Red, Red);
    end Init;
 
-   procedure Apply_Pedestrian_Cycle is
+   procedure Step_Ped_Start is
+   begin
+      Status := (Red, Red, Green);
+   end Step_Ped_Start;
+
+   procedure Step_Ped_End is
    begin
       Status := (Red, Red, Red);
-   end Apply_Pedestrian_Cycle;
+   end Step_Ped_End;
 
-   procedure Apply_Main_Cycle is
-   begin
-      Status.Main_Road := Red;
-   end Apply_Main_Cycle;
 
-   procedure Apply_Side_Cycle is
+   procedure Step_Main_Prepare is
    begin
-      Status.Side_Road := Red;
-      Status.Main_Road := Red;
-   end Apply_Side_Cycle;
+      Status := (Amber, Red, Red);
+   end Step_Main_Prepare;
+
+   procedure Step_Main_Green is
+   begin
+      Status := (Green, Red, Red);
+   end Step_Main_Green;
+
+   procedure Step_Main_Amber is
+   begin
+      Status := (Amber, Red, Red);
+   end Step_Main_Amber;
+
+   procedure Step_Main_Red is
+   begin
+      Status := (Red, Red, Red);
+   end Step_Main_Red;
+
+   procedure Step_Side_Prepare is
+   begin
+      Status := (Red, Amber, Red);
+   end Step_Side_Prepare;
+
+   procedure Step_Side_Green is
+   begin
+      Status := (Red, Green, Red);
+   end Step_Side_Green;
+
+   procedure Step_Side_Amber is
+   begin
+      Status := (Red, Amber, Red);
+   end Step_Side_Amber;
+
+   procedure Step_Side_Red is
+   begin
+      Status := (Red, Red, Red);
+   end Step_Side_Red;
+
+   procedure Step_All_Red is
+   begin
+      Status := (Red, Red, Red);
+   end Step_All_Red;
 
    procedure Run_Traffic_Cycle
      (Ped      : in Boolean;
@@ -30,19 +70,19 @@ package body Traffic_Control is
    is
    begin
       if Ped then
-         Apply_Pedestrian_Cycle;
+         Step_Ped_Start;
       end if;
 
       if Car_Main then
-         Apply_Main_Cycle;
+         Step_Main_Prepare;
       end if;
 
       if Car_Side then
-         Apply_Side_Cycle;
+         Step_Side_Prepare;
       end if;
 
       if (not Ped) and (not Car_Main) and (not Car_Side) then
-         Status := (Red, Red, Red);
+         Step_All_Red;
       end if;
    end Run_Traffic_Cycle;
 
