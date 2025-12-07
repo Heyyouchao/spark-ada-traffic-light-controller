@@ -1,36 +1,40 @@
 pragma SPARK_Mode (On);
 
 package Traffic_Control is
-
-   -------------------------
-   -- Types and State
-   -------------------------
+   
+   --  Traffic light colours.
    type Light_Color is (Red, Amber, Green);
-
+   
+   --  Full junction state.
    type Junction_State is record
       Main_Road  : Light_Color;
       Side_Road  : Light_Color;
       Pedestrian : Light_Color;
    end record;
-
+   
+   --  Global traffic-light status.
    Status : Junction_State;
-   --  SAFETY INVARIANT:
-   --  Only one traffic direction may be green at any time.
-   --  Pedestrians may only walk when all roads are red.
-
-   pragma Annotate
-   (GNATprove, Invariant,
-      ((not (Status.Pedestrian = Green)) or
-         (Status.Main_Road = Red and Status.Side_Road = Red))
+   
+   ------------------------------------------------------------------
+   --  Safety predicate:
+   --  Ensures only one direction can be green at any time and
+   --  pedestrians only walk when both roads are red.
+   ------------------------------------------------------------------
+   function Safe (S : Junction_State) return Boolean is
+     (
+        (((not (S.Pedestrian = Green)) or
+          (S.Main_Road = Red and S.Side_Road = Red)))
       and
-      ((not (Status.Main_Road = Green)) or
-         (Status.Side_Road = Red and Status.Pedestrian = Red))
+        (((not (S.Main_Road = Green)) or
+          (S.Side_Road = Red and S.Pedestrian = Red)))
       and
-      ((not (Status.Side_Road = Green)) or
-         (Status.Main_Road = Red and Status.Pedestrian = Red)));
+        (((not (S.Side_Road = Green)) or
+          (S.Main_Road = Red and S.Pedestrian = Red)))
+     );
 
+   
    -------------------------
-   -- INITIALISATION
+   --  Initialise the junction to the safe all-red state.
    -------------------------
    procedure Init
      with
@@ -39,11 +43,13 @@ package Traffic_Control is
        Post =>
          Status.Main_Road  = Red      and
          Status.Side_Road  = Red      and
-         Status.Pedestrian = Red;
+         Status.Pedestrian = Red and
+         Safe(Status);
 
-   -------------------------
-   -- MAIN HIGH LEVEL LOGIC
-   -------------------------
+   ------------------------------------------------------------------
+   --  High-level controller: selects the correct traffic sequence
+   --  based on pedestrian and vehicle requests.
+   ------------------------------------------------------------------
    procedure Run_Traffic_Cycle
      (Ped      : in Boolean;
       Car_Main : in Boolean;
@@ -53,47 +59,44 @@ package Traffic_Control is
        Depends => (Status => (Status, Ped, Car_Main, Car_Side)),
        Pre =>
          not (Ped and Car_Main and Car_Side), -- example only
-       Post =>
-         ((not (Status.Pedestrian = Green)) or
-            (Status.Main_Road = Red and Status.Side_Road = Red)) and
+       Post => Safe(Status);
 
-         ((not (Status.Main_Road = Green)) or
-            (Status.Side_Road = Red and Status.Pedestrian = Red)) and
-
-         ((not (Status.Side_Road = Green)) or
-            (Status.Main_Road = Red and Status.Pedestrian = Red));
-   -------------------------
-   -- STEP PROCEDURES
-   -- (YOU MUST FILL IN THE ACTUAL POSTCONDITIONS)
-   -------------------------
-
+   -----------------------------------------------------------------
+   --  PEDESTRIAN PHASE
+   ------------------------------------------------------------------
    procedure Step_Ped_Start
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Green;
-
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Green and
+         Safe(Status);
+           
    procedure Step_Ped_End
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and 
+         Safe(Status);
 
+   -----------------------------------------------------------------
+   --  MAIN ROAD PHASE
+   ------------------------------------------------------------------
    procedure Step_Main_Prepare
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Amber and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
-
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and 
+         Safe(Status);
+   
    procedure Step_Main_Green
      with
        Global  => (Output => Status),
@@ -101,7 +104,8 @@ package Traffic_Control is
        Post => 
          Status.Main_Road = Green and
          Status.Side_Road = Red and
-         Status.Pedestrian = Red;
+         Status.Pedestrian = Red and 
+         Safe(Status);
 
    procedure Step_Main_Amber
      with
@@ -109,26 +113,32 @@ package Traffic_Control is
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Amber and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
-
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and
+         Safe(Status);
+         
    procedure Step_Main_Red
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
-
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and
+         Safe(Status);
+   
+   -----------------------------------------------------------------
+   --  SIDE ROAD PHASE
+   ------------------------------------------------------------------
    procedure Step_Side_Prepare
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Amber   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Amber and
+         Status.Pedestrian = Red and 
+         Safe(Status);
 
    procedure Step_Side_Green
      with
@@ -136,8 +146,9 @@ package Traffic_Control is
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Green   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Green and
+         Status.Pedestrian = Red and
+         Safe(Status);
 
    procedure Step_Side_Amber
      with
@@ -145,8 +156,9 @@ package Traffic_Control is
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Amber   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Amber and
+         Status.Pedestrian = Red and
+         Safe(Status);
 
    procedure Step_Side_Red
      with
@@ -154,16 +166,22 @@ package Traffic_Control is
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and 
+         Safe(Status);
    
+   ------------------------------------------------------------------
+   --  All signals red (full stop state).
+   ------------------------------------------------------------------
    procedure Step_All_Red
      with
        Global  => (Output => Status),
        Depends => (Status => null),
        Post =>
          Status.Main_Road  = Red and
-         Status.Side_Road  = Red   and
-         Status.Pedestrian = Red;
+         Status.Side_Road  = Red and
+         Status.Pedestrian = Red and
+         Safe(Status);
+
 
 end Traffic_Control;

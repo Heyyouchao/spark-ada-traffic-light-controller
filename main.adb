@@ -1,6 +1,6 @@
 pragma SPARK_Mode;
 
-with AS_IO_Wrapper; use AS_IO_Wrapper;
+with AS_IO_Wrapper;   use AS_IO_Wrapper;
 with Traffic_Control; use Traffic_Control;
 
 procedure Main is
@@ -8,31 +8,45 @@ procedure Main is
    Car_Side    : Boolean;
    Ped_Request : Boolean;
 
-   Buffer : String (1 .. 10);
+   Buffer : String (1 .. 20);
    Len    : Natural;
-
+   Dummy : Natural := 0;
+   --------------------------------------------------
+   -- Helper to print status + wait for user
+   --------------------------------------------------
+   procedure Wait_For_Enter is
+      Dummy_Buffer : String (1 .. 100);
+      Dummy_Len    : Natural;
+   begin
+      AS_Get_Line(Dummy_Buffer, Dummy_Len);
+   end Wait_For_Enter;
+   
    procedure Show_Step(Message : String) is
    begin
       AS_Put_Line("==== Traffic Controller ====");
-      AS_Put_Line(
-        "Main: " & Light_Color'Image(Status.Main_Road)
-        & "  Side: " & Light_Color'Image(Status.Side_Road)
-        & "  Ped: "  & Light_Color'Image(Status.Pedestrian)
-      );
-      AS_Put_Line(Message);
-      AS_Get_Line(Buffer, Len);
-   end Show_Step;
+      AS_Put("Main: ");
+      AS_Put(Light_Color'Image(Status.Main_Road));
+      AS_Put("  Side: ");
+      AS_Put(Light_Color'Image(Status.Side_Road));
+      AS_Put("  Ped: ");
+      AS_Put_Line(Light_Color'Image(Status.Pedestrian));
+
+     AS_Put_Line(Message);
+      -- Removed AS_Get_Line!
+      Wait_For_Enter;
+  end Show_Step;
 
 begin
    AS_Init_Standard_Output;
    AS_Init_Standard_Input;
-   
-   init;
-   AS_Put_Line ("System starting in ALL-RED safe state...");
-   AS_Put_Line ("");
+
+   Init;
+   AS_Put_Line("System starting in ALL-RED safe state...");
+   AS_Put_Line("");
 
    loop
-      --------------------------------------------------
+      
+       --------------------------------------------------
       -- Read Sensors
       --------------------------------------------------
       loop
@@ -60,14 +74,17 @@ begin
          AS_Put_Line("Please enter Y or N");
       end loop;
       Ped_Request := Buffer(1) in 'Y' | 'y';
-      
-      --------------------------------------------------
-      -- Call SPARK Logic (important!)
-      --------------------------------------------------
-      Run_Traffic_Cycle(Ped_Request, Car_Main, Car_Side);
 
       --------------------------------------------------
-      -- PEDESTRIAN SEQUENCE
+      -- SPARK LOGIC
+      --------------------------------------------------
+      -- Precondition prevents Ped + Main + Side together
+      if not (Ped_Request and Car_Main and Car_Side) then
+         Run_Traffic_Cycle(Ped_Request, Car_Main, Car_Side);
+      end if;
+
+      --------------------------------------------------
+      -- PEDESTRIAN PHASE
       --------------------------------------------------
       if Ped_Request then
          Step_Ped_Start;
@@ -77,8 +94,9 @@ begin
          Show_Step("Pedestrian phase complete. Press ENTER...");
       end if;
 
+
       --------------------------------------------------
-      -- MAIN ROAD SEQUENCE
+      -- MAIN ROAD PHASE
       --------------------------------------------------
       if Car_Main then
          Step_Main_Prepare;
@@ -94,8 +112,9 @@ begin
          Show_Step("Main stopped. Press ENTER...");
       end if;
 
+
       --------------------------------------------------
-      -- SIDE ROAD SEQUENCE
+      -- SIDE ROAD PHASE
       --------------------------------------------------
       if Car_Side then
          Step_Side_Prepare;
@@ -111,20 +130,28 @@ begin
          Show_Step("Side stopped. Press ENTER...");
       end if;
 
+
       --------------------------------------------------
       -- NO TRAFFIC
       --------------------------------------------------
-      if (not Ped_Request) and (not Car_Main) and (not Car_Side) then
+      if (not Ped_Request)
+        and (not Car_Main)
+        and (not Car_Side)
+      then
          Step_All_Red;
          AS_Put_Line("No traffic detected. All lights remain RED.");
       end if;
 
+
       --------------------------------------------------
-      -- Loop Exit
+      -- EXIT OPTION
       --------------------------------------------------
       AS_Put_Line("Press ENTER to continue or type X to exit:");
       AS_Get_Line(Buffer, Len);
 
-      exit when (Len > 0) and then (Buffer(1) in 'X' | 'x');
+      exit when (Len > 0)
+        and then (Buffer(1) in 'X' | 'x');
+
    end loop;
+
 end Main;
