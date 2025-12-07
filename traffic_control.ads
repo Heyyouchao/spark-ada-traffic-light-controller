@@ -64,6 +64,10 @@ package Traffic_Control is
    -----------------------------------------------------------------
    --  PEDESTRIAN PHASE
    ------------------------------------------------------------------
+   --  Pedestrian Rule:
+   --  All pedestrian lights must be green simultaneously during a pedestrian phase.
+   --  The controller enforces this by setting every road light to Red and the
+   --  pedestrian light to Green at the same time, guaranteeing a safe crossing state.
    procedure Step_Ped_Start
      with
        Global  => (Output => Status),
