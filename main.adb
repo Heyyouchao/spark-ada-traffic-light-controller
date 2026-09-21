@@ -32,7 +32,6 @@ procedure Main is
       AS_Put_Line(Light_Color'Image(Status.Pedestrian));
 
      AS_Put_Line(Message);
-      -- Removed AS_Get_Line!
       Wait_For_Enter;
   end Show_Step;
 
