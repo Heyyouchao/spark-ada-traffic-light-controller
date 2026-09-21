@@ -58,7 +58,7 @@ package Traffic_Control is
        Global  => (In_Out => Status),
        Depends => (Status => (Status, Ped, Car_Main, Car_Side)),
        Pre =>
-         not (Ped and Car_Main and Car_Side), -- example only
+         not (Ped and Car_Main and Car_Side),
        Post => Safe(Status);
 
    -----------------------------------------------------------------
